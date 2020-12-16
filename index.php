@@ -25,40 +25,42 @@
 	</div>
 
 <style>
-    body {
-    	margin: 0;
-    	background-color: SteelBlue;
-    }
+body {
+	margin: 0;
+	background-color: SteelBlue;
+}
 
-	.container {
-		width: 90%;
-		max-width: 700px;
-		margin: 0 auto;
-		padding: 34px;
-		background-color: white;
-		height: 100vh;
-	}
+.container {
+	width: 90%;
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 34px;
+	background-color: white;
+	height: 5000px;
+}
 
-	#timepicker th, #timepicker td {
-		padding: 8px 4px;
-		font-size: 15px;
-	}
+#timepicker th, #timepicker td {
+	padding: 8px 4px;
+	font-size: 15px;
+}
 
-	#timepicker td:nth-child(1) {
-        border-right: 0;
-	}
+#timepicker td:nth-child(1) {
+    border-right: 0;
+}
 
-	#timepicker td:nth-child(2) {;
-        border-left: 0;
-	}
+#timepicker td:nth-child(2) {;
+    border-left: 0;
+}
 
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;
 }
+
 input[type=range]:focus {
   outline: none;
 }
+
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 8.4px;
@@ -68,6 +70,7 @@ input[type=range]::-webkit-slider-runnable-track {
   border-radius: 1.3px;
   border: 0.2px solid #010101;
 }
+
 input[type=range]::-webkit-slider-thumb {
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
   border: 1px solid #000000;
@@ -79,9 +82,11 @@ input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   margin-top: -4px;
 }
+
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #649ac6;
 }
+
 input[type=range]::-moz-range-track {
   width: 100%;
   height: 8.4px;
@@ -91,6 +96,7 @@ input[type=range]::-moz-range-track {
   border-radius: 1.3px;
   border: 0.2px solid #010101;
 }
+
 input[type=range]::-moz-range-thumb {
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
   border: 1px solid #000000;
@@ -100,6 +106,7 @@ input[type=range]::-moz-range-thumb {
   background: #ffffff;
   cursor: pointer;
 }
+
 input[type=range]::-ms-track {
   width: 100%;
   height: 8.4px;
@@ -109,18 +116,21 @@ input[type=range]::-ms-track {
   border-width: 16px 0;
   color: transparent;
 }
+
 input[type=range]::-ms-fill-lower {
   background: #2a6495;
   border: 0.2px solid #010101;
   border-radius: 2.6px;
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
+
 input[type=range]::-ms-fill-upper {
   background: #3071a9;
   border: 0.2px solid #010101;
   border-radius: 2.6px;
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
+
 input[type=range]::-ms-thumb {
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
   border: 1px solid #000000;
@@ -130,45 +140,140 @@ input[type=range]::-ms-thumb {
   background: #ffffff;
   cursor: pointer;
 }
+
 input[type=range]:focus::-ms-fill-lower {
   background: #3071a9;
 }
+
 input[type=range]:focus::-ms-fill-upper {
   background: #649ac6;
 }
-
-
-
-
-
 
 #timepicker {
 	width: 250px;
 }
 
+.timepicker-btns .alt {
+	margin: 0;
+}
 </style>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
+var today = new Date();
+var time = today.getHours() + ":" + today.getMinutes();
+var currentTime = time;
+var currentHour = today.getHours();
+var currentMinute = today.getMinutes();
+
+var targetEl;
+
+currentHour = addZeroBefore(currentHour);
+currentMinute = addZeroBefore(currentMinute);
+
+function addZeroBefore(n) {
+  return (n < 10 ? '0' : '') + n;
+}
+
+function updateTimepicker() {
+	var timeValue = currentHour + ':' + currentMinute;
+	document.getElementById("time-guide").innerHTML = timeValue;
+	targetEl.value = timeValue;
+}
+
+function updateHour(newHour) {
+	currentHour = addZeroBefore(newHour);
+	updateTimepicker();
+}
+
+function updateMinute(newMinute) {
+	currentMinute = addZeroBefore(newMinute);
+	updateTimepicker();
+}
+
+function updateTimepickerSliders(hourSlider, minuteSlider) {
+	hourSlider.value = currentHour;
+	minuteSlider.value = currentMinute;
+}
+
+//updateTimepickerSliders(hourSlider, minuteSlider);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function initTimepicker(clickedEl) {
 	//destroy other timepickers
+	var currentOpenTimepicker = document.getElementById("timepicker");
+
+ 
+    //If it isn't "undefined" and it isn't "null", then it exists.
+    if(typeof(currentOpenTimepicker) != 'undefined' && currentOpenTimepicker != null){
+        closeTimepicker();
+    }
+
+
+
+
+
+
+
+
+	targetEl = clickedEl;
 
 	var timepicker = document.createElement("div");
     timepicker.setAttribute("id", "timepicker");
@@ -183,24 +288,6 @@ function initTimepicker(clickedEl) {
     timepickerTblTopTh.appendChild(tblHeadline);
     timepickerTblTopTr.appendChild(timepickerTblTopTh);
     timepickerTbl.appendChild(timepickerTblTopTr);
-
-
-
-    //build the timepicker table body
-
-// <tr>
-// 				<td>Time</td>
-// 				<td id="time-guide">00:00</td>
-// 			</tr>
-// 			<tr>
-// 				<td>Hour</td>
-// 				<td><input type="range" id="hours" name="points" min="0" max="23" oninput="updateHour(this.value)" onchange="updateHour(this.value)"></td>
-// 			</tr>
-// 			<tr>
-// 				<td>Minute</td>
-// 				<td><input type="range" id="minutes" name="minutes" min="0" max="59" oninput="updateMinute(this.value)" onchange="updateMinute(this.value)"></td>
-// 			</tr>
-
 	
 	//first row
 	var tblRow = document.createElement("tr");
@@ -211,7 +298,7 @@ function initTimepicker(clickedEl) {
 
 	tblCell = document.createElement("td");
 	tblCell.setAttribute("id", "time-guide");
-	tblCellTxt = document.createTextNode("00:00");
+	tblCellTxt = document.createTextNode(currentTime);
 	tblCell.appendChild(tblCellTxt);
 	tblRow.appendChild(tblCell);
 
@@ -228,27 +315,15 @@ function initTimepicker(clickedEl) {
 	var formInput = document.createElement("input");
 	formInput.setAttribute("type", "range");
 	formInput.setAttribute("id", "hours");
-	formInput.setAttribute("name", "points");
 	formInput.setAttribute("min", "0");
 	formInput.setAttribute("max", "23");
 	formInput.setAttribute("oninput", "updateHour(this.value)");
 	formInput.setAttribute("onchange", "updateHour(this.value)");
+	formInput.setAttribute("value", currentHour);
+
 	tblCell.appendChild(formInput);
-
-
-
-///   javascript dynamically create form input
-
-
-
-
-	// tblCell.setAttribute("id", "time-guide");
-	// tblCellTxt = document.createTextNode("hour slider here");
-	// tblCell.appendChild(tblCellTxt);
 	tblRow.appendChild(tblCell);
-
 	timepickerTbl.appendChild(tblRow);
-
 
 	//third row
 	tblRow = document.createElement("tr");
@@ -258,27 +333,52 @@ function initTimepicker(clickedEl) {
 	tblRow.appendChild(tblCell);
 
 	tblCell = document.createElement("td");
-
-// 				<td><input type="range" id="minutes" name="minutes" min="0" max="59" oninput="updateMinute(this.value)" onchange="updateMinute(this.value)"></td>
-
 	formInput = document.createElement("input");
 	formInput.setAttribute("type", "range");
 	formInput.setAttribute("id", "minutes");
-	formInput.setAttribute("name", "minutes");
 	formInput.setAttribute("min", "0");
 	formInput.setAttribute("max", "59");
 	formInput.setAttribute("oninput", "updateMinute(this.value)");
 	formInput.setAttribute("onchange", "updateMinute(this.value)");
+	formInput.setAttribute("value", currentMinute);
 	tblCell.appendChild(formInput);
+	tblRow.appendChild(tblCell);
+	timepickerTbl.appendChild(tblRow);
 
+	//timepicker buttons row
+	tblRow = document.createElement("tr");
+	tblRow.setAttribute("class", "timepicker-btns");
+	tblCell = document.createElement("td");
+	var timepickerBtn1 = document.createElement("button");
+	timepickerBtn1.setAttribute("class", "alt");
+	timepickerBtn1.setAttribute("type", "button");
+	var btn1Txt = document.createTextNode("Now");
+	timepickerBtn1.setAttribute("onclick", "setToNow()")
 
-	// tblCell.setAttribute("id", "time-guide");
-	// tblCellTxt = document.createTextNode("minute slider here");
-	// tblCell.appendChild(tblCellTxt);
+	timepickerBtn1.appendChild(btn1Txt);
+	tblCell.appendChild(timepickerBtn1);
+	tblRow.appendChild(tblCell);
+
+	tblCell = document.createElement("td");
+	var timepickerBtn2 = document.createElement("button");
+	timepickerBtn2.setAttribute("class", "alt");
+	timepickerBtn2.setAttribute("type", "button");
+	timepickerBtn2.setAttribute("onclick", "closeTimepicker()")
+	var btn2Txt = document.createTextNode("Done");
+	timepickerBtn2.appendChild(btn2Txt);
+	tblCell.appendChild(timepickerBtn2);
+	tblCell.setAttribute("style", "text-align: right;");
 	tblRow.appendChild(tblCell);
 
 	timepickerTbl.appendChild(tblRow);
 
+	//javascript dynamically create button
+
+
+      // <tr class="timepicker-btns">
+      //   <td><button class="alt">Now</button></td>
+      //   <td style="text-align: right;"><button class="alt">Done</button></td>
+      // </tr>
 
 
 
@@ -290,68 +390,38 @@ function initTimepicker(clickedEl) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-timepicker.appendChild(timepickerTbl);
-
-    // var sampleTxt = document.createTextNode('timepicker ahoy!');
-    // timepicker.appendChild(sampleTxt);
-
+	timepicker.appendChild(timepickerTbl);
     clickedEl.parentNode.insertBefore(timepicker, clickedEl.nextSibling);
+}
 
+function closeTimepicker() {
+	var timepicker = document.getElementById("timepicker");
+	timepicker.remove();
+}
+
+function setToNow() {
+
+ 	currentTime = time;
+	currentHour = today.getHours();
+	currentMinute = today.getMinutes();
+	currentHour = addZeroBefore(currentHour);
+	currentMinute = addZeroBefore(currentMinute);
+
+	var hourSlider = document.getElementById("hours");
+	var minuteSlider = document.getElementById("minutes");
+	updateTimepickerSliders(hourSlider, minuteSlider);
+	updateTimepicker();
 
 }
 
-// function buildDatepickerCalendar(clickedEl) {
-//     destroyDatepickerCalendars();
 
-//     datepickerCalendar = document.createElement("div");
-//     datepickerCalendar.setAttribute("class", "datepicker-calendar");
 
-//     if (datepickerCanvas == 'large') {
-//         clickedEl.parentNode.insertBefore(datepickerCalendar, clickedEl.nextSibling);
-//     } else {
-//         //create an overlay
-//     }
-
-//     var datepickerHead = buildDatepickerHead();
-//     datepickerCalendar.appendChild(datepickerHead);
-
-//     //build and populate calendar table
-//     var datepickerTbl = buildAndPopulateDatepickerTbl();
-//     datepickerCalendar.appendChild(datepickerTbl);
-
-// //         if (calendarCanvas == 'small') {
-// //             adjustCalendarHeight();
-// //         }
-
-// }
-
-	
 var timepickers = document.getElementsByClassName("timepicker");
 for (var i = 0; i < timepickers.length; i++) {
 	timepickers[i].addEventListener("click", (ev) => {
 		initTimepicker(ev.target);
 	});
 }
-
-
 </script>
-
-
-
-
-
-
-
-	
 </body>
 </html>

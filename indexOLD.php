@@ -26,9 +26,24 @@
 				<td>Minute</td>
 				<td><input type="range" id="minutes" name="minutes" min="0" max="59" oninput="updateMinute(this.value)" onchange="updateMinute(this.value)"></td>
 			</tr>
+      <tr class="timepicker-btns">
+        <td><button class="alt">Now</button></td>
+        <td style="text-align: right;"><button class="alt">Done</button></td>
+      </tr>
 		</table>
 
 <style>
+
+  .timepicker-btns > td {
+    margin: 0;
+    padding: 0;
+  }
+
+  .timepicker-btns .alt {
+    margin: 0;
+  }
+
+
 	#timepicker th, #timepicker td {
 		padding: 8px 4px;
 		font-size: 15px;
