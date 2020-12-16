@@ -151,6 +151,9 @@ input[type=range]:focus::-ms-fill-upper {
 
 #timepicker {
 	width: 250px;
+	position: absolute;
+	z-index: 99;
+	background-color: white;
 }
 
 .timepicker-btns .alt {
@@ -195,7 +198,7 @@ function updateTimepickerSliders(hourSlider, minuteSlider) {
 	minuteSlider.value = currentMinute;
 }
 
-//updateTimepickerSliders(hourSlider, minuteSlider);
+
 
 
 
@@ -260,18 +263,11 @@ function initTimepicker(clickedEl) {
 	//destroy other timepickers
 	var currentOpenTimepicker = document.getElementById("timepicker");
 
- 
+
     //If it isn't "undefined" and it isn't "null", then it exists.
     if(typeof(currentOpenTimepicker) != 'undefined' && currentOpenTimepicker != null){
         closeTimepicker();
     }
-
-
-
-
-
-
-
 
 	targetEl = clickedEl;
 
@@ -371,25 +367,6 @@ function initTimepicker(clickedEl) {
 	tblRow.appendChild(tblCell);
 
 	timepickerTbl.appendChild(tblRow);
-
-	//javascript dynamically create button
-
-
-      // <tr class="timepicker-btns">
-      //   <td><button class="alt">Now</button></td>
-      //   <td style="text-align: right;"><button class="alt">Done</button></td>
-      // </tr>
-
-
-
-
-
-
-
-
-
-
-
 	timepicker.appendChild(timepickerTbl);
     clickedEl.parentNode.insertBefore(timepicker, clickedEl.nextSibling);
 }
