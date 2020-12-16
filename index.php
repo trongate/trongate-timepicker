@@ -163,8 +163,6 @@ input[type=range]:focus::-ms-fill-upper {
 
 <script>
 
-Timepicker: {
-
 var today = new Date();
 var currentHour = addZeroBefore(today.getHours());
 var currentMinute = addZeroBefore(today.getMinutes());
@@ -382,7 +380,6 @@ for (var i = 0; i < timepickers.length; i++) {
 	});
 }
 
-}
 </script>
 </body>
 </html>
