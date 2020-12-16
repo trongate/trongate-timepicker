@@ -165,10 +165,10 @@ input[type=range]:focus::-ms-fill-upper {
 
 Timepicker: {
 
-today = new Date();
-currentHour = addZeroBefore(today.getHours());
-currentMinute = addZeroBefore(today.getMinutes());
-currentTime = currentHour + ":" + currentMinute;
+var today = new Date();
+var currentHour = addZeroBefore(today.getHours());
+var currentMinute = addZeroBefore(today.getMinutes());
+var currentTime = currentHour + ":" + currentMinute;
 
 function addZeroBefore(n) {
     return (n < 10 ? '0' : '') + n;
