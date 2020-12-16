@@ -7,28 +7,38 @@
 	<title>Document</title>
 </head>
 <body>
-	<h1>Timepicker</h1>
-
-	<div id="timepicker">
-		<table>
-			<tr>
-				<th colspan="2">Choose Time</th>
-			</tr>
-			<tr>
-				<td>Time</td>
-				<td id="time-guide">00:00</td>
-			</tr>
-			<tr>
-				<td>Hour</td>
-				<td><input type="range" id="hours" name="points" min="0" max="23" oninput="updateHour(this.value)" onchange="updateHour(this.value)"></td>
-			</tr>
-			<tr>
-				<td>Minute</td>
-				<td><input type="range" id="minutes" name="minutes" min="0" max="59" oninput="updateMinute(this.value)" onchange="updateMinute(this.value)"></td>
-			</tr>
-		</table>
+	<div class="container">
+		<h2 style="text-align: center;">Timepicker Example</h2>
+		<form action="x">
+			<label>First Name</label>
+			<input type="text">
+			<label>Last Name</label>
+			<input type="text">
+			<label>Arrive Date</label>
+			<input type="text" name="arrive" class="timepicker">
+			<label>Email Address</label>
+			<input type="text">
+			<label>Description</label>
+			<textarea name="whatever" id="" cols="30" rows="10"></textarea>
+			<button>Submit</button>
+		</form>
+	</div>
 
 <style>
+    body {
+    	margin: 0;
+    	background-color: SteelBlue;
+    }
+
+	.container {
+		width: 90%;
+		max-width: 700px;
+		margin: 0 auto;
+		padding: 34px;
+		background-color: white;
+		height: 100vh;
+	}
+
 	#timepicker th, #timepicker td {
 		padding: 8px 4px;
 		font-size: 15px;
@@ -41,88 +51,7 @@
 	#timepicker td:nth-child(2) {;
         border-left: 0;
 	}
-</style>
 
-
-
-
-		<form action="#">
-			<label>Start Date</label>
-			<input type="text" class="timepicker">
-
-
-
-
-
-	<br>
-	<label>Hour:</label>
-	
-	<br>
-	<label>Minute:</label>
-	
-
-
-			<p>Lorem, ipsum dolor sit amet consectetur adipisicing, elit. Omnis tempora eligendi repudiandae provident assumenda, illum temporibus ex magnam ducimus reiciendis ipsum quae? Atque praesentium vel quo, obcaecati nobis officiis rem.</p>
-		</form>
-
-	</div>
-
-<script>
-var today = new Date();
-var time = today.getHours() + ":" + today.getMinutes();
-var currentTime = time;
-var currentHour = today.getHours();
-var currentMinute = today.getMinutes();
-
-currentHour = addZeroBefore(currentHour);
-currentMinute = addZeroBefore(currentMinute);
-
-var timepickers = document.getElementsByClassName("timepicker");
-var targetEl = timepickers[0];
-targetEl.value = currentTime;
-
-var hourSlider = document.getElementById("hours");
-var minuteSlider = document.getElementById("minutes");
-var timeGuide = document.getElementById("time-guide");
-
-timeGuide.innerHTML = currentTime;
-
-function addZeroBefore(n) {
-  return (n < 10 ? '0' : '') + n;
-}
-
-function updateTimepicker(el) {
-
-	el.value = currentHour + ':' + currentMinute;
-	timeGuide.innerHTML = currentHour + ':' + currentMinute;
-
-}
-
-function updateHour(newHour) {
-	currentHour = addZeroBefore(newHour);
-	console.log('newHour is ' + currentHour);
-	updateTimepicker(targetEl);
-}
-
-function updateMinute(newMinute) {
-	currentMinute = addZeroBefore(newMinute);
-	console.log('newMinute is ' + currentMinute);
-	updateTimepicker(targetEl);
-}
-
-function updateTimepickerSliders(hourSlider, minuteSlider) {
-	hourSlider.value = currentHour;
-	minuteSlider.value = currentMinute;
-}
-
-updateTimepickerSliders(hourSlider, minuteSlider);
-
-console.log(currentTime);
-console.log(currentHour);
-console.log(currentMinute);
-</script>
-
-<style>
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;
@@ -216,6 +145,7 @@ input[type=range]:focus::-ms-fill-upper {
 #timepicker {
 	width: 250px;
 }
+
 </style>
 
 
@@ -235,9 +165,193 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 
+<script>
+
+function initTimepicker(clickedEl) {
+	//destroy other timepickers
+
+	var timepicker = document.createElement("div");
+    timepicker.setAttribute("id", "timepicker");
+
+    //build the timepicker table
+    var timepickerTbl = document.createElement("table");
+    var timepickerTblTopTr = document.createElement("tr");
+    timepickerTbl.appendChild(timepickerTblTopTr);
+    var timepickerTblTopTh = document.createElement("th");
+    timepickerTblTopTh.setAttribute("colspan", "2");
+    var tblHeadline = document.createTextNode('Choose Time');
+    timepickerTblTopTh.appendChild(tblHeadline);
+    timepickerTblTopTr.appendChild(timepickerTblTopTh);
+    timepickerTbl.appendChild(timepickerTblTopTr);
+
+
+
+    //build the timepicker table body
+
+// <tr>
+// 				<td>Time</td>
+// 				<td id="time-guide">00:00</td>
+// 			</tr>
+// 			<tr>
+// 				<td>Hour</td>
+// 				<td><input type="range" id="hours" name="points" min="0" max="23" oninput="updateHour(this.value)" onchange="updateHour(this.value)"></td>
+// 			</tr>
+// 			<tr>
+// 				<td>Minute</td>
+// 				<td><input type="range" id="minutes" name="minutes" min="0" max="59" oninput="updateMinute(this.value)" onchange="updateMinute(this.value)"></td>
+// 			</tr>
+
+	
+	//first row
+	var tblRow = document.createElement("tr");
+	var tblCell = document.createElement("td");
+	var tblCellTxt = document.createTextNode('Time');
+	tblCell.appendChild(tblCellTxt);
+	tblRow.appendChild(tblCell);
+
+	tblCell = document.createElement("td");
+	tblCell.setAttribute("id", "time-guide");
+	tblCellTxt = document.createTextNode("00:00");
+	tblCell.appendChild(tblCellTxt);
+	tblRow.appendChild(tblCell);
+
+	timepickerTbl.appendChild(tblRow);
+
+	//second row
+	tblRow = document.createElement("tr");
+	tblCell = document.createElement("td");
+	tblCellTxt = document.createTextNode('Hour');
+	tblCell.appendChild(tblCellTxt);
+	tblRow.appendChild(tblCell);
+
+	tblCell = document.createElement("td");
+	var formInput = document.createElement("input");
+	formInput.setAttribute("type", "range");
+	formInput.setAttribute("id", "hours");
+	formInput.setAttribute("name", "points");
+	formInput.setAttribute("min", "0");
+	formInput.setAttribute("max", "23");
+	formInput.setAttribute("oninput", "updateHour(this.value)");
+	formInput.setAttribute("onchange", "updateHour(this.value)");
+	tblCell.appendChild(formInput);
+
+
+
+///   javascript dynamically create form input
 
 
 
 
+	// tblCell.setAttribute("id", "time-guide");
+	// tblCellTxt = document.createTextNode("hour slider here");
+	// tblCell.appendChild(tblCellTxt);
+	tblRow.appendChild(tblCell);
+
+	timepickerTbl.appendChild(tblRow);
+
+
+	//third row
+	tblRow = document.createElement("tr");
+	tblCell = document.createElement("td");
+	tblCellTxt = document.createTextNode('Minute');
+	tblCell.appendChild(tblCellTxt);
+	tblRow.appendChild(tblCell);
+
+	tblCell = document.createElement("td");
+
+// 				<td><input type="range" id="minutes" name="minutes" min="0" max="59" oninput="updateMinute(this.value)" onchange="updateMinute(this.value)"></td>
+
+	formInput = document.createElement("input");
+	formInput.setAttribute("type", "range");
+	formInput.setAttribute("id", "minutes");
+	formInput.setAttribute("name", "minutes");
+	formInput.setAttribute("min", "0");
+	formInput.setAttribute("max", "59");
+	formInput.setAttribute("oninput", "updateMinute(this.value)");
+	formInput.setAttribute("onchange", "updateMinute(this.value)");
+	tblCell.appendChild(formInput);
+
+
+	// tblCell.setAttribute("id", "time-guide");
+	// tblCellTxt = document.createTextNode("minute slider here");
+	// tblCell.appendChild(tblCellTxt);
+	tblRow.appendChild(tblCell);
+
+	timepickerTbl.appendChild(tblRow);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+timepicker.appendChild(timepickerTbl);
+
+    // var sampleTxt = document.createTextNode('timepicker ahoy!');
+    // timepicker.appendChild(sampleTxt);
+
+    clickedEl.parentNode.insertBefore(timepicker, clickedEl.nextSibling);
+
+
+}
+
+// function buildDatepickerCalendar(clickedEl) {
+//     destroyDatepickerCalendars();
+
+//     datepickerCalendar = document.createElement("div");
+//     datepickerCalendar.setAttribute("class", "datepicker-calendar");
+
+//     if (datepickerCanvas == 'large') {
+//         clickedEl.parentNode.insertBefore(datepickerCalendar, clickedEl.nextSibling);
+//     } else {
+//         //create an overlay
+//     }
+
+//     var datepickerHead = buildDatepickerHead();
+//     datepickerCalendar.appendChild(datepickerHead);
+
+//     //build and populate calendar table
+//     var datepickerTbl = buildAndPopulateDatepickerTbl();
+//     datepickerCalendar.appendChild(datepickerTbl);
+
+// //         if (calendarCanvas == 'small') {
+// //             adjustCalendarHeight();
+// //         }
+
+// }
+
+	
+var timepickers = document.getElementsByClassName("timepicker");
+for (var i = 0; i < timepickers.length; i++) {
+	timepickers[i].addEventListener("click", (ev) => {
+		initTimepicker(ev.target);
+	});
+}
+
+
+</script>
+
+
+
+
+
+
+
+	
 </body>
 </html>
