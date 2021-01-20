@@ -183,3 +183,42 @@ for (var i = 0; i < timepickers.length; i++) {
         initTimepicker(ev.target);
     });
 }
+
+function childOf( node, ancestor ) {
+    var child = node;
+    while (child !== null) {
+        if (child === ancestor) return true;
+        child = child.parentNode;
+    }
+    return false;   
+}
+
+var pageBody = document.getElementsByTagName("body")[0];
+pageBody.addEventListener("click", (ev) => {
+
+    var timepickerPopups = document.getElementsByClassName("timepicker-popup");
+
+    if (timepickerPopups.length>0) {
+
+        var clickedEl = ev.target;
+
+        //does the clickedEl contain the datepicker class?
+        if ((clickedEl.classList.contains("timepicker-popup")) || (clickedEl.classList.contains("timepicker"))) {
+            return;
+        } else {
+
+            for (var i = 0; i < timepickerPopups.length; i++) {
+                var targetAncestor = timepickerPopups[i];
+                var isChild = childOf(clickedEl, targetAncestor);
+
+                if (isChild !== true) {
+                    timepickerPopups[i].remove();
+                }
+
+            }
+
+        }
+
+    }
+
+});
