@@ -39,16 +39,16 @@ body {
 	height: 5000px;
 }
 
-#timepicker th, #timepicker td {
+.timepicker-popup th, .timepicker-popup td {
 	padding: 8px 4px;
 	font-size: 15px;
 }
 
-#timepicker td:nth-child(1) {
+.timepicker-popup td:nth-child(1) {
     border-right: 0;
 }
 
-#timepicker td:nth-child(2) {;
+.timepicker-popup td:nth-child(2) {;
     border-left: 0;
 }
 
@@ -149,7 +149,7 @@ input[type=range]:focus::-ms-fill-upper {
   background: #649ac6;
 }
 
-#timepicker {
+.timepicker-popup {
 	width: 250px;
 	position: absolute;
 	z-index: 99;
@@ -167,7 +167,6 @@ var time = today.getHours() + ":" + today.getMinutes();
 var currentTime = time;
 var currentHour = today.getHours();
 var currentMinute = today.getMinutes();
-
 var targetEl;
 
 currentHour = addZeroBefore(currentHour);
@@ -178,8 +177,14 @@ function addZeroBefore(n) {
 }
 
 function updateTimepicker() {
+    //get the 'name' of the clicked element
+    var elName = targetEl.name;
+    var popupId = 'timepicker-popup-' + elName;
+
+    //get the time-guide cell
+    var timeGuideCell = document.querySelector("#" + popupId + " > table > tr:nth-child(2) > td:nth-child(2)");
 	var timeValue = currentHour + ':' + currentMinute;
-	document.getElementById("time-guide").innerHTML = timeValue;
+    timeGuideCell.innerHTML = timeValue;
 	targetEl.value = timeValue;
 }
 
@@ -261,18 +266,21 @@ function updateTimepickerSliders(hourSlider, minuteSlider) {
 
 function initTimepicker(clickedEl) {
 	//destroy other timepickers
-	var currentOpenTimepicker = document.getElementById("timepicker");
-
-
-    //If it isn't "undefined" and it isn't "null", then it exists.
-    if(typeof(currentOpenTimepicker) != 'undefined' && currentOpenTimepicker != null){
-        closeTimepicker();
+    var elName = clickedEl.name;
+    var popupId = 'timepicker-popup-' + elName;
+	var currentOpenTimepicker = document.getElementById(popupId);
+    var timepickerPopups = document.getElementsByClassName("timepicker-popup");
+    for (var i = 0; i < timepickerPopups.length; i++) {
+        if (timepickerPopups[i] !== currentOpenTimepicker) {
+            timepickerPopups[i].remove();
+        }
     }
 
 	targetEl = clickedEl;
 
 	var timepicker = document.createElement("div");
-    timepicker.setAttribute("id", "timepicker");
+    timepicker.setAttribute("id", popupId);
+    timepicker.setAttribute("class", "timepicker-popup");
 
     //build the timepicker table
     var timepickerTbl = document.createElement("table");
@@ -293,7 +301,6 @@ function initTimepicker(clickedEl) {
 	tblRow.appendChild(tblCell);
 
 	tblCell = document.createElement("td");
-	tblCell.setAttribute("id", "time-guide");
 	tblCellTxt = document.createTextNode(currentTime);
 	tblCell.appendChild(tblCellTxt);
 	tblRow.appendChild(tblCell);
@@ -310,7 +317,6 @@ function initTimepicker(clickedEl) {
 	tblCell = document.createElement("td");
 	var formInput = document.createElement("input");
 	formInput.setAttribute("type", "range");
-	formInput.setAttribute("id", "hours");
 	formInput.setAttribute("min", "0");
 	formInput.setAttribute("max", "23");
 	formInput.setAttribute("oninput", "updateHour(this.value)");
@@ -331,7 +337,6 @@ function initTimepicker(clickedEl) {
 	tblCell = document.createElement("td");
 	formInput = document.createElement("input");
 	formInput.setAttribute("type", "range");
-	formInput.setAttribute("id", "minutes");
 	formInput.setAttribute("min", "0");
 	formInput.setAttribute("max", "59");
 	formInput.setAttribute("oninput", "updateMinute(this.value)");
@@ -372,26 +377,27 @@ function initTimepicker(clickedEl) {
 }
 
 function closeTimepicker() {
-	var timepicker = document.getElementById("timepicker");
-	timepicker.remove();
+    var elName = targetEl.name;
+    var popupId = 'timepicker-popup-' + elName;
+    var timepickerPopup = document.getElementById(popupId);
+	timepickerPopup.remove();
 }
 
 function setToNow() {
-
  	currentTime = time;
 	currentHour = today.getHours();
 	currentMinute = today.getMinutes();
 	currentHour = addZeroBefore(currentHour);
 	currentMinute = addZeroBefore(currentMinute);
 
-	var hourSlider = document.getElementById("hours");
-	var minuteSlider = document.getElementById("minutes");
+    var elName = targetEl.name;
+    var popupId = 'timepicker-popup-' + elName;
+    var timepickerPopup = document.getElementById(popupId);
+    var hourSlider = document.querySelector("#" + popupId + " > table > tr:nth-child(3) > td:nth-child(2) > input[type=range]");
+    var minuteSlider = document.querySelector("#" + popupId + " > table > tr:nth-child(4) > td:nth-child(2) > input[type=range]");
 	updateTimepickerSliders(hourSlider, minuteSlider);
 	updateTimepicker();
-
 }
-
-
 
 var timepickers = document.getElementsByClassName("timepicker");
 for (var i = 0; i < timepickers.length; i++) {
